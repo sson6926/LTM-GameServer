@@ -1,0 +1,24 @@
+package com.game_server.handlers;
+
+import com.game_server.controllers.ServerThread;
+import com.game_server.services.UserService;
+import org.json.JSONObject;
+
+public class LoginHandler implements ActionHandler {
+    @Override
+    public void handle(JSONObject request, ServerThread thread) {
+        String username = request.optString("username", "");
+        String password = request.optString("password", "");
+        UserService userService = new UserService();
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("type", "LOGIN");
+        if (userService.login(username, password)) {
+            responseJson.put("status", "success");
+            responseJson.put("message", "Login successful");
+        } else {
+            responseJson.put("status", "fail");
+            responseJson.put("message", "Invalid username or password");
+        }
+        thread.sendMessage(responseJson);
+    }
+}
