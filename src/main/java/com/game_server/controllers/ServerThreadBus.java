@@ -17,6 +17,10 @@ public class ServerThreadBus {
     public void add(ServerThread serverThread) {
         listServerThreads.add(serverThread);
     }
+    
+    public void remove(ServerThread serverThread) {
+        listServerThreads.remove(serverThread);
+    }
 
     public int getLength() {
         return listServerThreads.size();

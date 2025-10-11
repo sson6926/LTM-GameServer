@@ -87,6 +87,11 @@ public class ServerThread implements Runnable {
     public void closeConnection() {
         isClosed = true;
         try {
+            
+            if (serverThreadBus != null) {
+                serverThreadBus.remove(this);
+            }
+            
             if (in != null) in.close();
             if (out != null) out.close();
             if (socket != null && !socket.isClosed()) socket.close();
