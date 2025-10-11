@@ -39,14 +39,12 @@ public class UserDAO extends DAO {
     }
 
     public boolean addUser(User user) {
-        String sql = "INSERT INTO user (username, password, nickname, is_online, is_playing) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (username, password, nickname) " +
+                "VALUES (?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getNickname());
-            ps.setBoolean(4, user.isOnline());
-            ps.setBoolean(5, user.isPlaying());
             int rows = ps.executeUpdate();
             return rows > 0;
         } catch (SQLException e) {

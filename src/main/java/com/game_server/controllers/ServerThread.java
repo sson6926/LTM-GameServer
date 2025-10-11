@@ -6,6 +6,7 @@ import com.game_server.handlers.GetOnlineUsersHandler;
 import com.game_server.handlers.InviteHandler;
 import com.game_server.handlers.InviteResponseHandler;
 import com.game_server.handlers.LoginHandler;
+import com.game_server.handlers.RegisterHandler;
 import com.game_server.models.User;
 import org.json.JSONObject;
 
@@ -35,7 +36,7 @@ public class ServerThread implements Runnable {
     private void registerHandlers() {
         actionHandlers.put("LOGIN", new LoginHandler());
         // Có thể thêm các action khác ở đây, ví dụ:
-        // actionHandlers.put("REGISTER", new RegisterHandler());
+        actionHandlers.put("REGISTER", new RegisterHandler());
         actionHandlers.put("GET_ONLINE_USERS", new GetOnlineUsersHandler());
         actionHandlers.put("INVITE", new InviteHandler());
         actionHandlers.put("INVITE_RESPONSE", new InviteResponseHandler());
