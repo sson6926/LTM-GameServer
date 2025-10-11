@@ -68,6 +68,16 @@ public class UserDAO extends DAO {
         return false;
     }
 
+    public void updateToOnline(int userId) {
+        String sql = "UPDATE user SET is_online = TRUE, is_playing = FALSE WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void updateToOffline(int userId) {
         String sql = "UPDATE user SET is_online = FALSE, is_playing = FALSE WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -100,5 +110,25 @@ public class UserDAO extends DAO {
         return userList;
     }
 
-
+    public List<User> getOnlineUsers() {
+        String sql = "SELECT id, username, nickname, is_online, is_playing FROM user WHERE is_online = TRUE";
+        List<User> userList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        "",
+                        rs.getString("nickname"),
+                        rs.getBoolean("is_online"),
+                        rs.getBoolean("is_playing")
+                );
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
 }

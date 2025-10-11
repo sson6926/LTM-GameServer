@@ -2,6 +2,7 @@ package com.game_server.controllers;
 
 
 import com.game_server.handlers.ActionHandler;
+import com.game_server.handlers.GetOnlineUsersHandler;
 import com.game_server.handlers.LoginHandler;
 import org.json.JSONObject;
 
@@ -31,6 +32,7 @@ public class ServerThread implements Runnable {
         actionHandlers.put("LOGIN", new LoginHandler());
         // Có thể thêm các action khác ở đây, ví dụ:
         // actionHandlers.put("REGISTER", new RegisterHandler());
+        actionHandlers.put("GET_ONLINE_USERS", new GetOnlineUsersHandler());
     }
 
     @Override
@@ -99,4 +101,9 @@ public class ServerThread implements Runnable {
             e.printStackTrace();
         }
     }
+    
+    public ServerThreadBus getServerThreadBus() {
+        return this.serverThreadBus;
+    }
+    
 }

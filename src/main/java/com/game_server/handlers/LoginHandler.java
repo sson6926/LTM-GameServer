@@ -15,6 +15,7 @@ public class LoginHandler implements ActionHandler {
         if (userService.login(username, password)) {
             responseJson.put("status", "success");
             responseJson.put("message", "Login successful");
+            responseJson.put("username", username);
         } else {
             responseJson.put("status", "fail");
             responseJson.put("message", "Invalid username or password");
