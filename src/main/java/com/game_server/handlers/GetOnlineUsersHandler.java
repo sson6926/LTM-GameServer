@@ -19,20 +19,34 @@ public class GetOnlineUsersHandler implements ActionHandler {
 
     @Override
     public void handle(JSONObject request, ServerThread thread) {
-        UserService userService = new UserService();
+//        UserService userService = new UserService();
 
-        List<User> onlineUsers = userService.getOnlineUsers();
+//        List<User> onlineUsers = userService.getOnlineUsers();
+//        JSONArray usersArray = new JSONArray();
+//        for (User user : onlineUsers) {
+//            
+//            JSONObject userJson = new JSONObject();
+//            userJson.put("id", user.getId());
+//            userJson.put("username", user.getUsername());
+//            userJson.put("nickname", user.getNickname());
+//            userJson.put("isOnline", user.isOnline());
+//            userJson.put("isPlaying", user.isPlaying());
+//
+//            usersArray.put(userJson);
+//        }
+  
         JSONArray usersArray = new JSONArray();
-        for (User user : onlineUsers) {
-            
-            JSONObject userJson = new JSONObject();
-            userJson.put("id", user.getId());
-            userJson.put("username", user.getUsername());
-            userJson.put("nickname", user.getNickname());
-            userJson.put("isOnline", user.isOnline());
-            userJson.put("isPlaying", user.isPlaying());
+        for (ServerThread t : thread.getServerThreadBus().getListServerThreads()) {
+            if (t.getLoginUser() != null && t.getLoginUser().isOnline()) {
+                JSONObject userJson = new JSONObject();
+                userJson.put("id", t.getLoginUser().getId());
+                userJson.put("username", t.getLoginUser().getUsername());
+                userJson.put("nickname", t.getLoginUser().getNickname());
+                userJson.put("isOnline", t.getLoginUser().isOnline());
+                userJson.put("isPlaying", t.getLoginUser().isPlaying());
 
-            usersArray.put(userJson);
+                usersArray.put(userJson);
+            }
         }
         
         // Create response JSON

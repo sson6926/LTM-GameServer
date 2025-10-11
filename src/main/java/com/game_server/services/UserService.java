@@ -11,13 +11,13 @@ public class UserService {
         userDAO = new UserDAO();
     }
 
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
         User user = userDAO.verifyUser(new User(username, password));
         if (user != null) {
-            userDAO.updateToOnline(user.getId());
-            return true;
+//            userDAO.updateToOnline(user.getId());
+            return user;
         }
-        return false;
+        return null;
     }
 
     public boolean register(User user) {

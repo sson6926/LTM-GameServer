@@ -3,7 +3,10 @@ package com.game_server.controllers;
 
 import com.game_server.handlers.ActionHandler;
 import com.game_server.handlers.GetOnlineUsersHandler;
+import com.game_server.handlers.InviteHandler;
+import com.game_server.handlers.InviteResponseHandler;
 import com.game_server.handlers.LoginHandler;
+import com.game_server.models.User;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -12,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerThread implements Runnable {
+    private User loginUser;
     private int clientId;
     private Socket socket;
     private BufferedReader in;
@@ -33,6 +37,8 @@ public class ServerThread implements Runnable {
         // Có thể thêm các action khác ở đây, ví dụ:
         // actionHandlers.put("REGISTER", new RegisterHandler());
         actionHandlers.put("GET_ONLINE_USERS", new GetOnlineUsersHandler());
+        actionHandlers.put("INVITE", new InviteHandler());
+        actionHandlers.put("INVITE_RESPONSE", new InviteResponseHandler());
     }
 
     @Override
@@ -92,6 +98,7 @@ public class ServerThread implements Runnable {
             
             if (serverThreadBus != null) {
                 serverThreadBus.remove(this);
+                serverThreadBus.broadCastToAll();
             }
             
             if (in != null) in.close();
@@ -104,6 +111,14 @@ public class ServerThread implements Runnable {
     
     public ServerThreadBus getServerThreadBus() {
         return this.serverThreadBus;
+    }
+    
+    public void setLoginUser(User user) {
+        this.loginUser = user;
+    }
+    
+    public User getLoginUser() {
+        return this.loginUser;
     }
     
 }
