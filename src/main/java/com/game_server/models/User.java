@@ -29,6 +29,15 @@ public class User {
         this.isOnline = isOnline;
         this.isPlaying = isPlaying;
     }
+    
+    public User(int id, String username, String nickname) {
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.password = "";
+        this.isOnline = false;
+        this.isPlaying = false;
+    }
 
     public int getId() {
         return id;

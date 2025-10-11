@@ -131,4 +131,25 @@ public class UserDAO extends DAO {
         }
         return userList;
     }
+    
+    public User getUserByUsername(String username) {
+        String sql = "SELECT id, username, nickname FROM user WHERE username = ?";
+        User user = null;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("nickname")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
 }
