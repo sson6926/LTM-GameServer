@@ -10,6 +10,7 @@ package com.game_server.models;
  */
 public class MatchUser {
 
+    private int id;
     private Match match;
     private User user;
     private int score;
@@ -30,6 +31,16 @@ public class MatchUser {
         this.user = user;
         this.score = score;
         this.isWinner = isWinner;
+    }
+    public MatchUser(int id, Match match, User user, int score, boolean isWinner) {
+        this.id = id;
+        this.match = match;
+        this.user = user;
+        this.score = score;
+        this.isWinner = isWinner;
+    }
+    public int getId() {
+        return id;
     }
     
     public Match getMatch() {

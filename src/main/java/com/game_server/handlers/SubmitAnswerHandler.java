@@ -44,13 +44,11 @@ public class SubmitAnswerHandler implements ActionHandler {
                 return;
             }
 
-            // ✅ LƯU ANSWER VÀO DATABASE VỚI ROUND_NUMBER
             UserAnswer answer = new UserAnswer(userId, matchId, roundNumber, timeCompleted, status);
             boolean saved = userAnswerDAO.saveUserAnswer(answer);
 
             System.out.println(" Received USER_ANSWER from user " + userId + " -> " + status);
 
-            // ✅ KIỂM TRA THEO ROUND_NUMBER
             boolean bothAnswered = userAnswerDAO.haveBothPlayersAnswered(matchId, roundNumber);
 
             // Khi cả 2 người chơi đã có kết quả
@@ -68,9 +66,6 @@ public class SubmitAnswerHandler implements ActionHandler {
         }
     }
 
-    /**
-     * Xử lý xác định thắng thua khi cả hai người đã trả lời
-     */
     private void determineWinner(int matchId, int roundNumber) {
         List<UserAnswer> answers = userAnswerDAO.getAnswersForRound(matchId, roundNumber);
         if (answers.size() < 2) {
@@ -129,10 +124,10 @@ public class SubmitAnswerHandler implements ActionHandler {
         else if (a1.getStatus().equals("CORRECT") && a2.getStatus().equals("CORRECT")) {
             if (a1.getTimeCompleted() < a2.getTimeCompleted()) {
                 result1 = "WIN"; result2 = "LOSE";
-                score1 = 3; score2 = -3;
+                score1 = 3; score2 = 2;
             } else if (a2.getTimeCompleted() < a1.getTimeCompleted()) {
                 result1 = "LOSE"; result2 = "WIN";
-                score1 = -3; score2 = 3;
+                score1 = 2; score2 = 3;
             } else {
                 result1 = result2 = "DRAW";
                 score1 = score2 = 0;
@@ -152,20 +147,13 @@ public class SubmitAnswerHandler implements ActionHandler {
             score1 = score2 = 0; 
             System.out.println("Both players wrong - draw");
         }
-        // ✅ Cả hai TIMEOUT → cả hai thua
+        // Cả hai TIMEOUT → cả hai thua
+        // Một TIMEOUT, một CORRECT → CORRECT thắng
+        // Một TIMEOUT, một WRONG → cả hai thua
+        // Cả hai CORRECT → so thời gian
+        // Một CORRECT, một WRONG → CORRECT thắng
+        // Cả hai WRONG → hòa
 
-        // ✅ Một TIMEOUT, một CORRECT → CORRECT thắng
-
-        // ✅ Một TIMEOUT, một WRONG → cả hai thua
-
-        // ✅ Cả hai CORRECT → so thời gian
-
-        // ✅ Một CORRECT, một WRONG → CORRECT thắng
-
-        // ✅ Cả hai WRONG → hòa
-
-        // ... phần còn lại giữ nguyên
-        matchDAO.updateEndTime(matchId, LocalDateTime.now());
         matchUserDAO.save(matchId, a1.getUserId(), score1, result1.equals("WIN"));
         matchUserDAO.save(matchId, a2.getUserId(), score2, result2.equals("WIN"));
 
@@ -173,7 +161,6 @@ public class SubmitAnswerHandler implements ActionHandler {
             + a1.getUserId() + " -> " + result1 + " (" + score1 + " points), User "
             + a2.getUserId() + " -> " + result2 + " (" + score2 + " points)");
 
-        // ✅ TÍNH TỔNG KẾT TỪ CÁC BẢNG HIỆN CÓ
         JSONObject resultMsg = createGameResultMessage(matchId, a1, a2, result1, result2, score1, score2);
 
         // Gửi kết quả cho cả hai user
@@ -203,7 +190,6 @@ public class SubmitAnswerHandler implements ActionHandler {
         resultMsg.put("roundResult1", result1);
         resultMsg.put("roundResult2", result2);
 
-        // ✅ LẤY TỔNG KẾT TỪ CÁC BẢNG HIỆN CÓ
         MatchSummary summary = matchDAO.getMatchSummary(matchId, a1.getUserId(), a2.getUserId());
 
         JSONObject player1Result = new JSONObject()
