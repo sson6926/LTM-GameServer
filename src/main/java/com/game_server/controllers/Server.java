@@ -31,4 +31,7 @@ public class Server {
             e.printStackTrace();
         }
     }
+    public static ServerThreadBus getServerThreadBus() {
+        return serverThreadBus;
+    }
 }

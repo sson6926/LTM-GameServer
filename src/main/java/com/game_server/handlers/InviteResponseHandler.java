@@ -29,6 +29,24 @@ public class InviteResponseHandler implements ActionHandler {
             UserDAO userDAO = new UserDAO();
             User user1 = userDAO.getUserByUsername(thread.getLoginUser().getUsername());
             User user2 = userDAO.getUserByUsername(request.optString("inviterUsername"));
+            JSONObject user1Json = new JSONObject();
+            user1Json.put("id", user1.getId());
+            user1Json.put("username", user1.getUsername());
+            user1Json.put("nickname", user1.getNickname());
+            user1Json.put("avatar", user1.getAvatar());
+            user1Json.put("score", user1.getScore());
+            user1Json.put("wins", user1.getWins());
+            user1Json.put("totalMatches", user1.getTotalMatches());
+
+            JSONObject user2Json = new JSONObject();
+            user2Json.put("id", user2.getId());
+            user2Json.put("username", user2.getUsername());
+            user2Json.put("nickname", user2.getNickname());
+            user2Json.put("avatar", user2.getAvatar());
+            user2Json.put("score", user2.getScore());
+            user2Json.put("wins", user2.getWins());
+            user2Json.put("totalMatches", user2.getTotalMatches());
+
             
             Match match = new Match(LocalDateTime.now(), "", false);
             MatchDAO matchDAO = new MatchDAO();
@@ -40,17 +58,22 @@ public class InviteResponseHandler implements ActionHandler {
             JSONObject questionJson = createQuestionJson(questionData);
             
             
-            JSONObject responseJson = new JSONObject();
-            responseJson.put("type", "START_GAME");
-            responseJson.put("matchId", match.getId());
-            responseJson.put("question", questionJson);
+           JSONObject responseToUser1 = new JSONObject();
+            responseToUser1.put("type", "START_GAME");
+            responseToUser1.put("matchId", match.getId());
+            responseToUser1.put("question", questionJson);
+            responseToUser1.put("self", user1Json);
+            responseToUser1.put("opponent", user2Json);
+
+            JSONObject responseToUser2 = new JSONObject(responseToUser1.toString());
+            responseToUser2.put("self", user2Json);
+            responseToUser2.put("opponent", user1Json);
             
-            
-            thread.sendMessage(responseJson);
+            thread.sendMessage(responseToUser1);
             thread.getLoginUser().setPlaying(true);
             for (ServerThread t : thread.getServerThreadBus().getListServerThreads()) {
                 if (t.getLoginUser().getUsername().equals(request.optString("inviterUsername"))) {
-                    t.sendMessage(responseJson);
+                    t.sendMessage(responseToUser2);
                     t.getLoginUser().setPlaying(true);
                     break;
                 }
@@ -85,6 +108,12 @@ public class InviteResponseHandler implements ActionHandler {
             itemsArray.put(item);
         }
         questionJson.put("items", itemsArray);
+        JSONArray itemsArrayAnswer = new JSONArray();
+        for (String item : questionData.getCorrectAnswer()) {
+            itemsArrayAnswer.put(item);
+        }
+        questionJson.put("correctAnswer", itemsArrayAnswer);
+        
         
         // Tạo instruction
         String typeText = questionData.isNumbers() ? "numbers" : "letters";

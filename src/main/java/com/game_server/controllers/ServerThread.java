@@ -3,10 +3,12 @@ package com.game_server.controllers;
 
 import com.game_server.handlers.ActionHandler;
 import com.game_server.handlers.GetOnlineUsersHandler;
+import com.game_server.handlers.InviteContinueNextRound;
 import com.game_server.handlers.InviteHandler;
 import com.game_server.handlers.InviteResponseHandler;
 import com.game_server.handlers.LoginHandler;
 import com.game_server.handlers.RegisterHandler;
+import com.game_server.handlers.SubmitAnswerHandler;
 import com.game_server.models.User;
 import org.json.JSONObject;
 
@@ -40,6 +42,8 @@ public class ServerThread implements Runnable {
         actionHandlers.put("GET_ONLINE_USERS", new GetOnlineUsersHandler());
         actionHandlers.put("INVITE", new InviteHandler());
         actionHandlers.put("INVITE_RESPONSE", new InviteResponseHandler());
+        actionHandlers.put("SUBMIT_USER_ANSWER", new SubmitAnswerHandler());
+        actionHandlers.put("INVITE_CONTINUE_NEXT_ROUND", new InviteContinueNextRound());
     }
 
     @Override

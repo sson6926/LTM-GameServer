@@ -5,6 +5,9 @@
 package com.game_server.dao;
 
 import com.game_server.models.Match;
+import com.game_server.models.MatchSummary;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,6 +87,48 @@ public class MatchDAO extends DAO{
             e.printStackTrace();
         }
         return false;
+    }
+    public MatchSummary getMatchSummary(int matchId, int user1Id, int user2Id) {
+        MatchSummary summary = new MatchSummary();
+        summary.setMatchId(matchId);
+
+        // ✅ Lấy tổng điểm và số win từ bảng match_user
+        String sql = "SELECT user_id, SUM(score) as total_score, SUM(is_winner) as total_wins " +
+                    "FROM match_user WHERE match_id = ? GROUP BY user_id";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, matchId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                int userId = rs.getInt("user_id");
+                int totalScore = rs.getInt("total_score");
+                int totalWins = rs.getInt("total_wins");
+                
+                if (userId == user1Id) {
+                    summary.setUser1TotalScore(totalScore);
+                    summary.setUser1Wins(totalWins);
+                } else if (userId == user2Id) {
+                    summary.setUser2TotalScore(totalScore);
+                    summary.setUser2Wins(totalWins);
+                }
+            }
+            
+            // ✅ Đếm tổng số round từ bảng user_answers
+            String roundSql = "SELECT COUNT(DISTINCT round_number) as total_rounds FROM user_answers WHERE match_id = ?";
+            try (PreparedStatement roundStmt = connection.prepareStatement(roundSql)) {
+                roundStmt.setInt(1, matchId);
+                ResultSet roundRs = roundStmt.executeQuery();
+                if (roundRs.next()) {
+                    summary.setTotalRounds(roundRs.getInt("total_rounds"));
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return summary;
     }
     
 }

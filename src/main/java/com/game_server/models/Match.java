@@ -18,7 +18,7 @@ public class Match {
     private LocalDateTime endTime;
     private String status;
     private boolean isVisible;
-    
+    private List<UserAnswer> userAnswers;
     private List<MatchUser> matchUsers;
 
     
@@ -83,8 +83,15 @@ public class Match {
         return matchUsers;
     }
 
+
     public void setMatchUsers(List<MatchUser> matchUsers) {
         this.matchUsers = matchUsers;
+    }
+    public List<UserAnswer> getUserAnswers() {
+        return userAnswers;
+    }
+    public void setUserAnswers(List<UserAnswer> userAnswers) {
+        this.userAnswers = userAnswers;
     }
 
     @Override

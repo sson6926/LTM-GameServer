@@ -5,8 +5,13 @@ public class User {
     private String username;
     private String password;
     private String nickname;
+    private String avatar;
+    private int score;
+    private int wins;
+    private int totalMatches;
     private boolean isOnline;
     private boolean isPlaying;
+
 
     public User(String username, String password) {
         this.username = username;
@@ -44,6 +49,43 @@ public class User {
         this.password = "";
         this.isOnline = false;
         this.isPlaying = false;
+    }
+    public User(int id, String username, String nickname, String avatar, int score, int wins, int totalMatches) {
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.avatar = avatar;
+        this.score = score;
+        this.wins = wins;
+        this.totalMatches = totalMatches;
+    }
+    public String getAvatar() {
+        return avatar;
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    public int getScore() {
+        return score;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public int getTotalMatches() {
+        return totalMatches;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public void setTotalMatches(int totalMatches) {
+        this.totalMatches = totalMatches;
     }
 
     public int getId() {

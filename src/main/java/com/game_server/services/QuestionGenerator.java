@@ -32,11 +32,22 @@ public class QuestionGenerator {
         
         // Tính thời gian dựa trên số lượng items
         int timeLimit = calculateTimeLimit(itemCount);
-        
-        // Tạo dãy items
+
         List<String> items = generateItems(isNumbers, itemCount);
+
         
-        return new QuestionData(isNumbers, isAscending, items, timeLimit);
+        // 🔹 Tạo đáp án đúng luôn
+        List<String> correctAnswer = new ArrayList<>(items);
+        if (isNumbers) {
+            correctAnswer.sort(Comparator.comparingInt(Integer::parseInt));
+        } else {
+            correctAnswer.sort(String::compareToIgnoreCase);
+        }
+        if (!isAscending) {
+            Collections.reverse(correctAnswer);
+        }
+
+        return new QuestionData(isNumbers, isAscending, items, timeLimit, correctAnswer);
     }
     
     /**
@@ -47,18 +58,21 @@ public class QuestionGenerator {
         private final boolean isAscending;
         private final List<String> items;
         private final int timeLimit;
-        
-        public QuestionData(boolean isNumbers, boolean isAscending, List<String> items, int timeLimit) {
+        private final List<String> correctAnswer;
+
+        public QuestionData(boolean isNumbers, boolean isAscending, List<String> items, int timeLimit, List<String> correctAnswer) {
             this.isNumbers = isNumbers;
             this.isAscending = isAscending;
             this.items = items;
             this.timeLimit = timeLimit;
+            this.correctAnswer = correctAnswer;
         }
         
         public boolean isNumbers() { return isNumbers; }
         public boolean isAscending() { return isAscending; }
         public List<String> getItems() { return items; }
         public int getTimeLimit() { return timeLimit; }
+        public List<String> getCorrectAnswer() { return correctAnswer; }
     }
     
     /**
@@ -101,4 +115,6 @@ public class QuestionGenerator {
         Collections.shuffle(items);
         return items;
     }
+
+    
 }
