@@ -3,6 +3,7 @@ package com.game_server.controllers;
 
 import com.game_server.handlers.ActionHandler;
 import com.game_server.handlers.LoginHandler;
+import com.game_server.handlers.RegisterHandler;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -28,7 +29,8 @@ public class ServerThread implements Runnable {
     }
 
     private void registerHandlers() {
-        actionHandlers.put("LOGIN", new LoginHandler());
+        actionHandlers.put("LOGIN_REQUEST", new LoginHandler());
+        actionHandlers.put("REGISTER_REQUEST", new RegisterHandler());
         // Có thể thêm các action khác ở đây, ví dụ:
         // actionHandlers.put("REGISTER", new RegisterHandler());
     }
@@ -60,14 +62,14 @@ public class ServerThread implements Runnable {
                 handler.handle(receivedJson, this);
             } else {
                 sendMessage(new JSONObject()
-                        .put("type", action)
+                        .put("action", action)
                         .put("status", "fail")
                         .put("message", "Unknown action: " + action)
                 );
             }
         } catch (Exception e) {
             sendMessage(new JSONObject()
-                    .put("type", "error")
+                    .put("action", "error")
                     .put("status", "fail")
                     .put("message", "Invalid request format")
             );

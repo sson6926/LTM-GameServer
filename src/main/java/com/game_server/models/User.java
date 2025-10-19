@@ -1,5 +1,7 @@
 package com.game_server.models;
 
+import org.json.JSONObject;
+
 public class User {
     private int id;
     private String username;
@@ -28,6 +30,17 @@ public class User {
         this.nickname = nickname;
         this.isOnline = isOnline;
         this.isPlaying = isPlaying;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("username", username);
+        json.put("password", password);
+        json.put("nickname", nickname);
+        json.put("isOnline", isOnline);
+        json.put("isPlaying", isPlaying);
+        return json;
     }
 
     public int getId() {
