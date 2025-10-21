@@ -55,7 +55,7 @@ public class UserDAO extends DAO {
         return false;
     }
 
-    public boolean checkDuplicateUsername(String username) {
+    public boolean checkUsername(String username) {
         String sql = "SELECT id FROM user WHERE username = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
