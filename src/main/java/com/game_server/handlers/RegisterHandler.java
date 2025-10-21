@@ -17,11 +17,16 @@ public class RegisterHandler implements ActionHandler {
             responseJson.put("status", "failed");
             responseJson.put("message", "Username has been taken");
         } else {
-//            if(userDAO.addUser(new User()))
+            User newUser = new User(username, password, nickname);
+            boolean isAdded = userDAO.addUser(newUser);
+            if(isAdded) {
+                responseJson.put("status", "success");
+                responseJson.put("message", "Registration successful");
+            } else {
+                responseJson.put("status", "failed");
+                responseJson.put("message", "Registration failed");
+            }
         }
-
-        responseJson.put("status", "success");
-        responseJson.put("message", "Registration successful (simulated)");
         thread.sendMessage(responseJson);
     }
 }
