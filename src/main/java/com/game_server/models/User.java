@@ -7,39 +7,39 @@ public class User {
     private String username;
     private String password;
     private String nickname;
-    private boolean isOnline;
-    private boolean isPlaying;
+    private int totalMatches;
+    private int totalWins;
+    private int totalScore;
+
+    public User(String username, String password, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+    }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
-    public User(String username, String password, String nickname,
-                boolean isOnline, boolean isPlaying) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.isOnline = isOnline;
-        this.isPlaying = isPlaying;
-    }
-    public User(int id, String username, String password, String nickname,
-                boolean isOnline, boolean isPlaying) {
+
+    public User(int id, String username, String password, String nickname, int totalMatches, int totalWins, int totalScore) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.isOnline = isOnline;
-        this.isPlaying = isPlaying;
+        this.totalMatches = totalMatches;
+        this.totalWins = totalWins;
+        this.totalScore = totalScore;
     }
 
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("id", id);
         json.put("username", username);
-        json.put("password", password);
         json.put("nickname", nickname);
-        json.put("isOnline", isOnline);
-        json.put("isPlaying", isPlaying);
+        json.put("total_matches", totalMatches);
+        json.put("total_wins", totalWins);
+        json.put("total_score", totalScore);
         return json;
     }
 
@@ -75,19 +75,27 @@ public class User {
         this.nickname = nickname;
     }
 
-    public boolean isOnline() {
-        return isOnline;
+    public int getTotalMatches() {
+        return totalMatches;
     }
 
-    public void setOnline(boolean online) {
-        isOnline = online;
+    public void setTotalMatches(int totalMatches) {
+        this.totalMatches = totalMatches;
     }
 
-    public boolean isPlaying() {
-        return isPlaying;
+    public int getTotalWins() {
+        return totalWins;
     }
 
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
+    public void setTotalWins(int totalWins) {
+        this.totalWins = totalWins;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
     }
 }
