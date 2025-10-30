@@ -20,6 +20,9 @@ public class ServerThreadBus {
     public void add(ServerThread serverThread) {
         listServerThreads.add(serverThread);
     }
+    public void remove(ServerThread serverThread) {
+        listServerThreads.remove(serverThread);
+    }
 
     public int getLength() {
         return listServerThreads.size();
@@ -41,7 +44,7 @@ public class ServerThreadBus {
         
         // Create response JSON
         JSONObject responseJson = new JSONObject();
-        responseJson.put("type", "GET_ONLINE_USERS");
+        responseJson.put("action", "GET_ONLINE_USERS_RESPONSE");
         responseJson.put("onlineUsers", usersArray);
         
         //Send to client

@@ -10,6 +10,7 @@ import com.game_server.handlers.InviteUserToGameResponseHandler;
 import com.game_server.handlers.LoginHandler;
 import com.game_server.handlers.RegisterHandler;
 import com.game_server.handlers.SubmitAnswerHandler;
+import com.game_server.handlers.QuitGameHandler;
 import com.game_server.models.User;
 
 import org.json.JSONObject;
@@ -46,6 +47,7 @@ public class ServerThread implements Runnable {
         actionHandlers.put("SUBMIT_USER_ANSWER", new SubmitAnswerHandler());
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME", new InviteContinueNextGameHandler());
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME_RESPONSE", new InviteContinueNextGameResponseHandler());
+        actionHandlers.put("QUIT_GAME", new QuitGameHandler());
 
 
 
@@ -64,12 +66,16 @@ public class ServerThread implements Runnable {
             String message;
             while (!isClosed) {
                 message = in.readLine();
-                if (message == null) break;
+                if (message == null) {
+                    System.out.println("Client " + clientId + " disconnected (message == null)");
+                    break;
+                }
                 handleMessage(message);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            handleClientDisconnect();
             closeConnection();
         }
     }
@@ -113,11 +119,33 @@ public class ServerThread implements Runnable {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
-            if (socket != null && !socket.isClosed()) socket.close();
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+                System.out.println("Socket closed for client " + clientId);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    private void handleClientDisconnect() {
+        System.out.println("Handling disconnect for client " + clientId);
+        
+        if (this.loginUser != null) {
+            // Đánh dấu offline
+            this.loginUser.setOnline(false);
+            this.loginUser.setPlaying(false);
+            System.out.println("User " + this.loginUser.getUsername() + " marked as offline");
+        }
+        
+        // Xóa khỏi danh sách
+        this.serverThreadBus.remove(this);
+        System.out.println("Removed client " + clientId + " from thread bus");
+        
+        // Thông báo cho các client khác
+        this.serverThreadBus.broadCastToAll();
+        System.out.println("Broadcasted updated online users list");
+    }
+
     public ServerThreadBus getServerThreadBus() {
         return this.serverThreadBus;
     }
