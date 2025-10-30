@@ -2,8 +2,16 @@ package com.game_server.controllers;
 
 
 import com.game_server.handlers.ActionHandler;
+import com.game_server.handlers.GetOnlineUsersHandler;
+import com.game_server.handlers.InviteContinueNextGameHandler;
+import com.game_server.handlers.InviteContinueNextGameResponseHandler;
+import com.game_server.handlers.InviteUserToGameHandler;
+import com.game_server.handlers.InviteUserToGameResponseHandler;
 import com.game_server.handlers.LoginHandler;
 import com.game_server.handlers.RegisterHandler;
+import com.game_server.handlers.SubmitAnswerHandler;
+import com.game_server.models.User;
+
 import org.json.JSONObject;
 
 import java.io.*;
@@ -12,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerThread implements Runnable {
+    public User loginUser;
     private int clientId;
     private Socket socket;
     private BufferedReader in;
@@ -31,6 +40,18 @@ public class ServerThread implements Runnable {
     private void registerHandlers() {
         actionHandlers.put("LOGIN_REQUEST", new LoginHandler());
         actionHandlers.put("REGISTER_REQUEST", new RegisterHandler());
+        actionHandlers.put("GET_ONLINE_USERS", new GetOnlineUsersHandler());
+        actionHandlers.put("INVITE_USER_TO_GAME", new InviteUserToGameHandler());
+        actionHandlers.put("INVITE_USER_TO_GAME_RESPONSE", new InviteUserToGameResponseHandler());
+        actionHandlers.put("SUBMIT_USER_ANSWER", new SubmitAnswerHandler());
+        actionHandlers.put("INVITE_USER_TO_NEXT_GAME", new InviteContinueNextGameHandler());
+        actionHandlers.put("INVITE_USER_TO_NEXT_GAME_RESPONSE", new InviteContinueNextGameResponseHandler());
+
+
+
+
+
+
         // Có thể thêm các action khác ở đây, ví dụ:
         // actionHandlers.put("REGISTER", new RegisterHandler());
     }
@@ -56,6 +77,7 @@ public class ServerThread implements Runnable {
     private void handleMessage(String message) {
         try {
             JSONObject receivedJson = new JSONObject(message);
+            System.err.println("Received from client " + clientId + ": " + receivedJson.toString());
             String action = receivedJson.optString("action", "");
             ActionHandler handler = actionHandlers.get(action);
             if (handler != null) {
@@ -95,5 +117,15 @@ public class ServerThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public ServerThreadBus getServerThreadBus() {
+        return this.serverThreadBus;
+    }
+    public void setLoginUser(User user) {
+        this.loginUser = user;
+    }
+    
+    public User getLoginUser() {
+        return this.loginUser;
     }
 }

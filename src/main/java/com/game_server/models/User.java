@@ -10,6 +10,9 @@ public class User {
     private int totalMatches;
     private int totalWins;
     private int totalScore;
+    private boolean isOnline;
+    private boolean isPlaying;
+
 
     public User(String username, String password, String nickname) {
         this.username = username;
@@ -26,6 +29,14 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.nickname = nickname;
+        this.totalMatches = totalMatches;
+        this.totalWins = totalWins;
+        this.totalScore = totalScore;
+    }
+    public User(int id, String username, String nickname, int totalMatches, int totalWins, int totalScore) {
+        this.id = id;
+        this.username = username;
         this.nickname = nickname;
         this.totalMatches = totalMatches;
         this.totalWins = totalWins;
@@ -97,5 +108,20 @@ public class User {
 
     public void setTotalScore(int totalScore) {
         this.totalScore = totalScore;
+    }
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 }

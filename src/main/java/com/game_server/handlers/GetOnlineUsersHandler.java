@@ -1,33 +1,20 @@
-package com.game_server.controllers;
+package com.game_server.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.game_server.controllers.ServerThread;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ServerThreadBus {
-    private final List<ServerThread> listServerThreads;
+/**
+ *
+ * @author ADMIN
+ */
+public class GetOnlineUsersHandler implements ActionHandler {
 
-    public ServerThreadBus() {
-        listServerThreads = new ArrayList<>();
-    }
-
-    public List<ServerThread> getListServerThreads() {
-        return listServerThreads;
-    }
-
-    public void add(ServerThread serverThread) {
-        listServerThreads.add(serverThread);
-    }
-
-    public int getLength() {
-        return listServerThreads.size();
-    }
-     public void broadCastToAll() {
+    @Override
+    public void handle(JSONObject request, ServerThread thread) {  
         JSONArray usersArray = new JSONArray();
-        for (ServerThread t : this.listServerThreads) {
-            if (t.getLoginUser() != null && t.getLoginUser().isOnline()) {
+        for (ServerThread t : thread.getServerThreadBus().getListServerThreads()) {
+            if (t.getLoginUser() != null  && t.getLoginUser().isOnline())  {
                 JSONObject userJson = new JSONObject();
                 userJson.put("id", t.getLoginUser().getId());
                 userJson.put("username", t.getLoginUser().getUsername());
@@ -41,12 +28,15 @@ public class ServerThreadBus {
         
         // Create response JSON
         JSONObject responseJson = new JSONObject();
-        responseJson.put("type", "GET_ONLINE_USERS");
+        responseJson.put("action", "GET_ONLINE_USERS_RESPONSE");
         responseJson.put("onlineUsers", usersArray);
         
         //Send to client
-        for (ServerThread t : this.listServerThreads) {
+        for (ServerThread t : thread.getServerThreadBus().getListServerThreads()) {
             t.sendMessage(responseJson);
         }
+        
+
     }
+
 }

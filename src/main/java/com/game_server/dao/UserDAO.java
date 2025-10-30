@@ -64,6 +64,73 @@ public class UserDAO extends DAO {
         }
         return false;
     }
+    public User getUserById(int id) {
+        String sql = "SELECT * FROM User WHERE id = ?";
+        User user = null;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("nickname"),
+                        rs.getInt("total_matches"),
+                        rs.getInt("total_wins"),
+                        rs.getInt("total_score")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public User getUserByUsername(String username) {
+        String sql = "SELECT * FROM User WHERE username = ?";
+        User user = null;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("nickname"),
+                        rs.getInt("total_matches"),
+                        rs.getInt("total_wins"),
+                        rs.getInt("total_score")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    public boolean updateUserStats(int userId, int matchIncrement, int winIncrement, int scoreIncrement) {
+        String sql = """
+            UPDATE User
+            SET total_matches = total_matches + ?,
+                total_wins = total_wins + ?,
+                total_score = total_score + ?
+            WHERE id = ?
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, matchIncrement);
+            ps.setInt(2, winIncrement);
+            ps.setInt(3, scoreIncrement);
+            ps.setInt(4, userId);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public static void main(String[] args) {
         // for testing purposes

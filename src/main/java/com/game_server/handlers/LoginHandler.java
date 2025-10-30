@@ -23,6 +23,10 @@ public class LoginHandler implements ActionHandler {
             responseJson.put("status", "fail");
             responseJson.put("message", "Invalid username or password");
         }
+        user.setOnline(true);
+        user.setPlaying(false);
+        thread.setLoginUser(user);
+        thread.sendMessage(responseJson);
         thread.sendMessage(responseJson);
     }
 }
