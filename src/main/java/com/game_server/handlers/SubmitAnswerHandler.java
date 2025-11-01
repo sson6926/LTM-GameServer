@@ -283,6 +283,8 @@ public class SubmitAnswerHandler implements ActionHandler {
             }
             MatchDAO matchDAO = new MatchDAO();
             matchDAO.updateResult( matchId, "DRAW");
+            userDAO.updateUserStats(rd1.getUser_id(), 1, 0, summary.getUser1TotalScore());
+            userDAO.updateUserStats(rd2.getUser_id(), 1, 0, summary.getUser2TotalScore());
         }
         JSONObject player1Result = new JSONObject()
             .put("userId", rd1.getUser_id())

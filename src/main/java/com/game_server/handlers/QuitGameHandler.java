@@ -50,6 +50,8 @@ public class QuitGameHandler implements ActionHandler {
                 }
                 MatchDAO matchDAO = new MatchDAO();
                 matchDAO.updateResult( matchId, "DRAW");
+                userDAO.updateUserStats(userId, 1, 0, matchSummary.getUser1TotalScore());
+                userDAO.updateUserStats(opponentId, 1, 0, matchSummary.getUser2TotalScore());
             }
             JSONObject resultMsg = new JSONObject();
             resultMsg.put("action", "GAME_FINAL_RESULT");

@@ -114,7 +114,7 @@ public class UserDAO extends DAO {
             UPDATE User
             SET total_matches = total_matches + ?,
                 total_wins = total_wins + ?,
-                total_score = total_score + ?
+                total_score = GREATEST(total_score + ?, 0)
             WHERE id = ?
         """;
 
