@@ -8,6 +8,7 @@ import com.game_server.handlers.InviteContinueNextGameResponseHandler;
 import com.game_server.handlers.InviteUserToGameHandler;
 import com.game_server.handlers.InviteUserToGameResponseHandler;
 import com.game_server.handlers.LoginHandler;
+import com.game_server.handlers.LogoutHandler;
 import com.game_server.handlers.RegisterHandler;
 import com.game_server.handlers.SubmitAnswerHandler;
 import com.game_server.models.User;
@@ -46,6 +47,7 @@ public class ServerThread implements Runnable {
         actionHandlers.put("SUBMIT_USER_ANSWER", new SubmitAnswerHandler());
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME", new InviteContinueNextGameHandler());
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME_RESPONSE", new InviteContinueNextGameResponseHandler());
+        actionHandlers.put("LOGOUT_REQUEST", new LogoutHandler());
 
 
 
@@ -111,6 +113,11 @@ public class ServerThread implements Runnable {
     public void closeConnection() {
         isClosed = true;
         try {
+            
+            if (serverThreadBus != null) {
+                serverThreadBus.remove(this);
+            }
+            
             if (in != null) in.close();
             if (out != null) out.close();
             if (socket != null && !socket.isClosed()) socket.close();

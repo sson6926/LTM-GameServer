@@ -27,6 +27,5 @@ public class LoginHandler implements ActionHandler {
         user.setPlaying(false);
         thread.setLoginUser(user);
         thread.sendMessage(responseJson);
-        thread.sendMessage(responseJson);
     }
 }

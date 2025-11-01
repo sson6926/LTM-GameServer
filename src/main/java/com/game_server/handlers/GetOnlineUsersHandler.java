@@ -33,7 +33,9 @@ public class GetOnlineUsersHandler implements ActionHandler {
         
         //Send to client
         for (ServerThread t : thread.getServerThreadBus().getListServerThreads()) {
-            t.sendMessage(responseJson);
+            if (t.getLoginUser() != null) {
+                t.sendMessage(responseJson); //chi gui den thread co user da login
+            }
         }
         
 
