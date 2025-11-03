@@ -37,6 +37,9 @@ public class ServerThreadBus {
                 userJson.put("nickname", t.getLoginUser().getNickname());
                 userJson.put("isOnline", t.getLoginUser().isOnline());
                 userJson.put("isPlaying", t.getLoginUser().isPlaying());
+                userJson.put("totalScore", t.getLoginUser().getTotalScore());
+                userJson.put("totalWins", t.getLoginUser().getTotalWins());
+                userJson.put("totalMatches", t.getLoginUser().getTotalMatches());
 
                 usersArray.put(userJson);
             }
