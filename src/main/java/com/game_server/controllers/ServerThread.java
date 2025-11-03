@@ -3,6 +3,7 @@ package com.game_server.controllers;
 
 import com.game_server.handlers.ActionHandler;
 import com.game_server.handlers.GetOnlineUsersHandler;
+import com.game_server.handlers.GetRankingHandler;
 import com.game_server.handlers.InviteContinueNextGameHandler;
 import com.game_server.handlers.InviteContinueNextGameResponseHandler;
 import com.game_server.handlers.InviteUserToGameHandler;
@@ -50,6 +51,8 @@ public class ServerThread implements Runnable {
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME_RESPONSE", new InviteContinueNextGameResponseHandler());
         actionHandlers.put("LOGOUT_REQUEST", new LogoutHandler());
         actionHandlers.put("QUIT_GAME", new QuitGameHandler());
+        actionHandlers.put("GET_RANKING_REQUEST", new GetRankingHandler());
+        
 
 
 

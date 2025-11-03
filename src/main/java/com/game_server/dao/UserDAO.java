@@ -1,11 +1,14 @@
 package com.game_server.dao;
 
+import com.game_server.models.Match;
 import com.game_server.models.User;
 import org.json.JSONObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO extends DAO {
     public UserDAO() {
@@ -131,7 +134,32 @@ public class UserDAO extends DAO {
         }
     }
 
-
+    public List<User> getAll(){
+        ArrayList<User> res = new ArrayList<>();
+        
+        String sql = "SELECT * FROM User;";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("nickname"),
+                        rs.getInt("total_matches"),
+                        rs.getInt("total_wins"),
+                        rs.getInt("total_score")
+                    );
+                   res.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return res;
+    }
+    
     public static void main(String[] args) {
         // for testing purposes
     }
