@@ -48,12 +48,14 @@ public class ServerThread implements Runnable {
         actionHandlers.put("SUBMIT_USER_ANSWER", new SubmitAnswerHandler());
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME", new InviteContinueNextGameHandler());
         actionHandlers.put("INVITE_USER_TO_NEXT_GAME_RESPONSE", new InviteContinueNextGameResponseHandler());
+        actionHandlers.put("LOGOUT_REQUEST", new LogoutHandler());
+        actionHandlers.put("QUIT_GAME", new QuitGameHandler());
 
 
 
 
 
-
+        
         // Có thể thêm các action khác ở đây, ví dụ:
         // actionHandlers.put("REGISTER", new RegisterHandler());
     }
