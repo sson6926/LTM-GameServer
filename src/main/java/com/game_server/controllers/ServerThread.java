@@ -1,18 +1,7 @@
 package com.game_server.controllers;
 
 
-import com.game_server.handlers.ActionHandler;
-import com.game_server.handlers.GetOnlineUsersHandler;
-import com.game_server.handlers.GetRankingHandler;
-import com.game_server.handlers.InviteContinueNextGameHandler;
-import com.game_server.handlers.InviteContinueNextGameResponseHandler;
-import com.game_server.handlers.InviteUserToGameHandler;
-import com.game_server.handlers.InviteUserToGameResponseHandler;
-import com.game_server.handlers.LoginHandler;
-import com.game_server.handlers.LogoutHandler;
-import com.game_server.handlers.RegisterHandler;
-import com.game_server.handlers.SubmitAnswerHandler;
-import com.game_server.handlers.QuitGameHandler;
+import com.game_server.handlers.*;
 import com.game_server.models.User;
 
 import org.json.JSONObject;
@@ -52,7 +41,8 @@ public class ServerThread implements Runnable {
         actionHandlers.put("LOGOUT_REQUEST", new LogoutHandler());
         actionHandlers.put("QUIT_GAME", new QuitGameHandler());
         actionHandlers.put("GET_RANKING_REQUEST", new GetRankingHandler());
-        
+
+        actionHandlers.put("GET_MATCH_HISTORY", new GetMatchHistoryHandler());
 
 
 
