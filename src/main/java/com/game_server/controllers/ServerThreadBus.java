@@ -31,6 +31,7 @@ public class ServerThreadBus {
         JSONArray usersArray = new JSONArray();
         for (ServerThread t : this.listServerThreads) {
             if (t.getLoginUser() != null && t.getLoginUser().isOnline()) {
+                t.updateLoginUser();
                 JSONObject userJson = new JSONObject();
                 userJson.put("id", t.getLoginUser().getId());
                 userJson.put("username", t.getLoginUser().getUsername());

@@ -1,6 +1,7 @@
 package com.game_server.controllers;
 
 
+import com.game_server.dao.UserDAO;
 import com.game_server.handlers.*;
 import com.game_server.models.User;
 
@@ -155,5 +156,13 @@ public class ServerThread implements Runnable {
     
     public User getLoginUser() {
         return this.loginUser;
+    }
+    
+    public void updateLoginUser(){
+        UserDAO ud = new UserDAO();
+        User u = ud.getUserById(this.loginUser.getId());
+        this.loginUser.setTotalMatches(u.getTotalMatches());
+        this.loginUser.setTotalScore(u.getTotalScore());
+        this.loginUser.setTotalWins(u.getTotalWins());
     }
 }

@@ -184,6 +184,7 @@ public class SubmitAnswerHandler implements ActionHandler {
                 }
             }
             System.out.println("Game finished due to player quitting. Final results sent to both players.");
+            Server.getServerThreadBus().broadCastToAll();
         } else {
 
             JSONObject resultMsg = createGameResultMessage(matchId, rd1, rd2, result1, result2, score1, score2,a1,a2);
