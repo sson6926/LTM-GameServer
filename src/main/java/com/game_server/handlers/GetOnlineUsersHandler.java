@@ -24,8 +24,6 @@ public class GetOnlineUsersHandler implements ActionHandler {
                 userJson.put("totalScore", t.getLoginUser().getTotalScore());
                 userJson.put("totalWins", t.getLoginUser().getTotalWins());
                 userJson.put("totalMatches", t.getLoginUser().getTotalMatches());
-
-
                 usersArray.put(userJson);
             }
         }
