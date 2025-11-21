@@ -5,6 +5,10 @@ import com.game_server.dao.UserDAO;
 import com.game_server.handlers.*;
 import com.game_server.models.User;
 
+import com.game_server.handlers.CreateRoomHandler;
+import com.game_server.handlers.JoinRoomHandler;
+import com.game_server.handlers.LeaveRoomHandler;
+
 import org.json.JSONObject;
 
 import java.io.*;
@@ -46,6 +50,10 @@ public class ServerThread implements Runnable {
         actionHandlers.put("GET_MATCH_HISTORY", new GetMatchHistoryHandler());
 
 
+        // thêm join phòng
+        actionHandlers.put("CREATE_ROOM_REQUEST", new CreateRoomHandler());
+        actionHandlers.put("JOIN_ROOM_REQUEST", new JoinRoomHandler());
+        actionHandlers.put("LEAVE_ROOM_REQUEST", new LeaveRoomHandler());
 
 
 
