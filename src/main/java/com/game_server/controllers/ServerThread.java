@@ -15,6 +15,11 @@ import com.game_server.handlers.SubmitAnswerHandler;
 import com.game_server.handlers.QuitGameHandler;
 import com.game_server.models.User;
 
+// thêm join phòng
+import com.game_server.handlers.CreateRoomHandler;
+import com.game_server.handlers.JoinRoomHandler;
+import com.game_server.handlers.LeaveRoomHandler;
+
 import org.json.JSONObject;
 
 import java.io.*;
@@ -52,8 +57,11 @@ public class ServerThread implements Runnable {
         actionHandlers.put("LOGOUT_REQUEST", new LogoutHandler());
         actionHandlers.put("QUIT_GAME", new QuitGameHandler());
         actionHandlers.put("GET_RANKING_REQUEST", new GetRankingHandler());
-        
 
+        // thêm join phòng
+        actionHandlers.put("CREATE_ROOM_REQUEST", new CreateRoomHandler());
+        actionHandlers.put("JOIN_ROOM_REQUEST", new JoinRoomHandler());
+        actionHandlers.put("LEAVE_ROOM_REQUEST", new LeaveRoomHandler());
 
 
 
