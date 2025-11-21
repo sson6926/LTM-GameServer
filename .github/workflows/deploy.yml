@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Deploy to VPS (TEST-CICD)
 
 on:
   push:
@@ -16,18 +16,18 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo "Pull latest image"
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/game-server:latest
+            echo "Pull TEST-CICD image"
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/game-server:test-cicd
             
             echo "Stop old container"
-            docker stop game-server || true
-            docker rm game-server || true
+            docker stop game-server-test || true
+            docker rm game-server-test || true
             
-            echo "Run new container"
+            echo "Run new TEST-CICD container"
             docker run -d \
-              --name game-server \
+              --name game-server-test \
               -p 8989:8989 \
               --restart always \
-              ${{ secrets.DOCKERHUB_USERNAME }}/game-server:latest
+              ${{ secrets.DOCKERHUB_USERNAME }}/game-server:test-cicd
             
             echo "Deployment done!"

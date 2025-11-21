@@ -1,8 +1,8 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image (TEST-CICD)
 
 on:
   push:
-    branches: ["main"]
+    branches: ["test-cicd"]
 
 jobs:
   build:
@@ -18,8 +18,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/game-server:latest .
+      - name: Build image for test-cicd
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/game-server:test-cicd .
 
-      - name: Push image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/game-server:latest
+      - name: Push image for test-cicd
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/game-server:test-cicd
