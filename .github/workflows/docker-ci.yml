@@ -15,14 +15,14 @@ jobs:
       - name: Create config.properties
         run: |
           cat <<EOF > src/main/resources/config.properties
-db.host=${{ secrets.DB_HOST }}
-db.port=${{ secrets.DB_PORT }}
-db.username=${{ secrets.DB_USERNAME }}
-db.password=${{ secrets.DB_PASSWORD }}
-db.dbname=${{ secrets.DB_NAME }}
-db.driver=${{ secrets.DB_DRIVER }}
-EOF
-
+          db.host=${{ secrets.DB_HOST }}
+          db.port=${{ secrets.DB_PORT }}
+          db.username=${{ secrets.DB_USERNAME }}
+          db.password=${{ secrets.DB_PASSWORD }}
+          db.dbname=${{ secrets.DB_NAME }}
+          db.driver=${{ secrets.DB_DRIVER }}
+          EOF
+          
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
