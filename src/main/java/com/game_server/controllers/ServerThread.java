@@ -1,19 +1,13 @@
 package com.game_server.controllers;
 
 
-import com.game_server.handlers.ActionHandler;
-import com.game_server.handlers.GetOnlineUsersHandler;
-import com.game_server.handlers.GetRankingHandler;
-import com.game_server.handlers.InviteContinueNextGameHandler;
-import com.game_server.handlers.InviteContinueNextGameResponseHandler;
-import com.game_server.handlers.InviteUserToGameHandler;
-import com.game_server.handlers.InviteUserToGameResponseHandler;
-import com.game_server.handlers.LoginHandler;
-import com.game_server.handlers.LogoutHandler;
-import com.game_server.handlers.RegisterHandler;
-import com.game_server.handlers.SubmitAnswerHandler;
-import com.game_server.handlers.QuitGameHandler;
+import com.game_server.dao.UserDAO;
+import com.game_server.handlers.*;
 import com.game_server.models.User;
+
+import com.game_server.handlers.CreateRoomHandler;
+import com.game_server.handlers.JoinRoomHandler;
+import com.game_server.handlers.LeaveRoomHandler;
 
 import org.json.JSONObject;
 
@@ -52,9 +46,14 @@ public class ServerThread implements Runnable {
         actionHandlers.put("LOGOUT_REQUEST", new LogoutHandler());
         actionHandlers.put("QUIT_GAME", new QuitGameHandler());
         actionHandlers.put("GET_RANKING_REQUEST", new GetRankingHandler());
-        
+
+        actionHandlers.put("GET_MATCH_HISTORY", new GetMatchHistoryHandler());
 
 
+        // thêm join phòng
+        actionHandlers.put("CREATE_ROOM_REQUEST", new CreateRoomHandler());
+        actionHandlers.put("JOIN_ROOM_REQUEST", new JoinRoomHandler());
+        actionHandlers.put("LEAVE_ROOM_REQUEST", new LeaveRoomHandler());
 
 
 
@@ -165,5 +164,13 @@ public class ServerThread implements Runnable {
     
     public User getLoginUser() {
         return this.loginUser;
+    }
+    
+    public void updateLoginUser(){
+        UserDAO ud = new UserDAO();
+        User u = ud.getUserById(this.loginUser.getId());
+        this.loginUser.setTotalMatches(u.getTotalMatches());
+        this.loginUser.setTotalScore(u.getTotalScore());
+        this.loginUser.setTotalWins(u.getTotalWins());
     }
 }

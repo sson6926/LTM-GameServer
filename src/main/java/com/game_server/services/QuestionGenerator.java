@@ -76,10 +76,10 @@ public class QuestionGenerator {
      */
     private static int calculateTimeLimit(int itemCount) {
         return switch (itemCount) {
-            case 5 -> 15;   // 5 items = 15 giây
-            case 10 -> 30;  // 10 items = 30 giây
-            case 15 -> 45;  // 15 items = 45 giây
-            default -> 30;  // Default
+            case 5 -> 20;   // 5 items = 20 giây
+            case 10 -> 40;  // 10 items = 40 giây
+            case 15 -> 75;  // 15 items = 75 giây
+            default -> 40;  // Default
         };
     }
     

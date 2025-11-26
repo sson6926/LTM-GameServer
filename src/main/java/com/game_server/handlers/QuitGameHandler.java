@@ -84,7 +84,9 @@ public class QuitGameHandler implements ActionHandler {
                     System.out.println("Sent final result to user " + currentUserId);
                 }
             }
-
+            
+            Server.getServerThreadBus().broadCastToAll();
+            
             }
         catch (Exception e) {
             e.printStackTrace();
