@@ -1,7 +1,10 @@
 package com.game_server;
 
+import com.game_server.controllers.Server;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Server server = Server.getInstance();
+        server.start();
     }
 }
